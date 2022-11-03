@@ -2,7 +2,9 @@
 const nextConfig = {
 	reactStrictMode: true,
 	swcMinify: true,
-	env: {},
+	env: {
+		API_Token: 'XjyuJFCOEZiSe5veAs84qns8h4x6Mgi6vBUDhrKu',
+	},
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
