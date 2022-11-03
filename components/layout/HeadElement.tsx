@@ -2,10 +2,10 @@ import Head from 'next/head';
 import React from 'react';
 
 function HeadElement({
-	pageTitle = 'Brand',
-	description = 'Brand description',
+	pageTitle = 'Finance Market',
+	description = 'Finance Market Tickers',
 	noIndex = false,
-	siteLink = 'https://branded-website-template-site.vercel.app/',
+	siteLink = 'https://arm-financial-market.netlify.app/',
 }: {
 	pageTitle?: string;
 	description?: string;

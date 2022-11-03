@@ -1,7 +1,7 @@
 import React from 'react';
 
 function MainSection() {
-	return <div>About Section</div>;
+	return <div>Market Section</div>;
 }
 
 export default MainSection;

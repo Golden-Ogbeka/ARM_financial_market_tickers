@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
 import AppLayout from '../components/layout/AppLayout';
-import MainSection from '../components/pages/About/MainSection';
+import MainSection from '../components/pages/Market/MainSection';
 
-const About: NextPage = () => {
+const Market: NextPage = () => {
 	return (
 		<AppLayout>
 			<MainSection />
@@ -10,4 +10,4 @@ const About: NextPage = () => {
 	);
 };
 
-export default About;
+export default Market;
