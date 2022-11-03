@@ -14,10 +14,10 @@ function Navbar() {
 				</div>
 				<div className='flex flex-row items-center gap-10'>
 					<Link href='/finance'>
-						<a className='text-white'>Finance News</a>
+						<a className='text-white font-secondary'>Finance News</a>
 					</Link>
 					<Link href='/market'>
-						<a className='text-white'>Market Stats</a>
+						<a className='text-white font-secondary'>Market Stats</a>
 					</Link>
 				</div>
 			</div>
