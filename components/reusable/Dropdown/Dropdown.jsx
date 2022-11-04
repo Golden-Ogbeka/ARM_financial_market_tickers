@@ -7,15 +7,10 @@ function Dropdown({
 
 	placeholder = 'Enter Value',
 	...props
-}: {
-	containerStyle?: {};
-	placeholder?: string;
-	isMulti?: boolean;
-	values: { label: string; value: string }[];
-} & React.InputHTMLAttributes<HTMLInputElement>) {
+}) {
 	return (
 		<Select
-			options={values.map((value: { label: string; value: string }) => ({
+			options={values.map((value) => ({
 				label: value.label,
 				value: value.value,
 			}))}
