@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import Logo from '../../../public/brand/logo.png';
+import SearchIcon from '../../../public/icons/entity-search.png';
 
 function Navbar() {
 	return (
@@ -17,7 +18,13 @@ function Navbar() {
 						<a className='text-white font-secondary'>Finance News</a>
 					</Link>
 					<Link href='/market'>
-						<a className='text-white font-secondary'>Market Stats</a>
+						<a className='text-white font-secondary hidden md:block'>Market Stats</a>
+					</Link>
+
+					<Link href='/entity-search'>
+						<a className='text-white font-secondary'>
+							<Image src={SearchIcon} alt='Search' width={24} objectFit='contain' />
+						</a>
 					</Link>
 				</div>
 			</div>

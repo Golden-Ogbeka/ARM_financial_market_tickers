@@ -11,7 +11,7 @@ import {
 	closeLoadingIndicator,
 	openLoadingIndicator,
 } from '../../../store/slices/loadingIndicator';
-import NewsItem from './NewsItem';
+import EntityItem from './EntityItem';
 import Pagination from '../../reusable/Pagination/pagination';
 
 function MainSection() {
@@ -20,20 +20,18 @@ function MainSection() {
 	const [page, setPage] = React.useState(1);
 	const [totalResults, setTotalResults] = React.useState(0);
 
-	const [newsResults, setNewsResults] = React.useState([]);
+	const [entitiesResults, setEntityResults] = React.useState([]);
 
 	const Formik = useFormik({
 		initialValues: {
-			countries: [],
-			industries: [],
+			search: '',
 		},
 		validationSchema: Yup.object({
-			countries: Yup.array().min(1, 'Select at least one country'),
-			industries: Yup.array().min(1, 'Select at least one industry'),
+			search: Yup.string().required('Search entity is required'),
 		}),
 
 		onSubmit: () => {
-			getNews();
+			getEntity();
 		},
 		enableReinitialize: true,
 	});
@@ -65,23 +63,15 @@ function MainSection() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const getNews = async () => {
-		dispatch(openLoadingIndicator({ text: 'Getting latest news...' }));
-
-		const stringCountries: string = Formik.values.countries
-			.map((item: { label: string; value: string }) => item.value)
-			.join(',');
-
-		const stringIndustries: string = Formik.values.industries
-			.map((item: { label: string; value: string }) => item.value)
-			.join(',');
+	const getEntity = async () => {
+		dispatch(openLoadingIndicator({ text: 'Getting entities...' }));
 
 		try {
 			const res = await axios.get(
-				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&page=1&api_token=${API_URL}`
+				`https://api.marketaux.com/v1/entity/search?search=${Formik.values.search}&page=1&api_token=${API_URL}`
 			);
 
-			setNewsResults(res.data.data);
+			setEntityResults(res.data.data);
 			setTotalResults(res.data.meta.found);
 		} catch (error: any) {
 			openAlert({
@@ -98,24 +88,16 @@ function MainSection() {
 
 	const nextPage = async () => {
 		setPage(page + 1);
-		dispatch(openLoadingIndicator({ text: 'Getting more news...' }));
-
-		const stringCountries: string = Formik.values.countries
-			.map((item: { label: string; value: string }) => item.value)
-			.join(',');
-
-		const stringIndustries: string = Formik.values.industries
-			.map((item: { label: string; value: string }) => item.value)
-			.join(',');
+		dispatch(openLoadingIndicator({ text: 'Getting more entities...' }));
 
 		try {
 			const res = await axios.get(
-				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&page=${
+				`https://api.marketaux.com/v1/entity/search?search=${Formik.values.search}&page=${
 					page + 1
 				}&api_token=${API_URL}`
 			);
 
-			setNewsResults(res.data.data);
+			setEntityResults(res.data.data);
 			setTotalResults(res.data.meta.found);
 		} catch (error: any) {
 			openAlert({
@@ -131,24 +113,21 @@ function MainSection() {
 	};
 	const previousPage = async () => {
 		setPage(page - 1);
-		dispatch(openLoadingIndicator({ text: 'Getting more news...' }));
-
-		const stringCountries: string = Formik.values.countries
-			.map((item: { label: string; value: string }) => item.value)
-			.join(',');
-
-		const stringIndustries: string = Formik.values.industries
-			.map((item: { label: string; value: string }) => item.value)
-			.join(',');
+		dispatch(openLoadingIndicator({ text: 'Getting more entities...' }));
 
 		try {
 			const res = await axios.get(
-				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&page=${
+				`https://api.marketaux.com/v1/entity/search?search=${Formik.values.search}&page=${
 					page - 1
 				}&api_token=${API_URL}`
 			);
 
-			setNewsResults(res.data.data);
+			openAlert({
+				message: 'Search successful',
+				type: 'success',
+			});
+
+			setEntityResults(res.data.data);
 			setTotalResults(res.data.meta.found);
 		} catch (error: any) {
 			openAlert({
@@ -171,60 +150,31 @@ function MainSection() {
 				>
 					<div className='text-white flex flex-col items-center'>
 						<h1 className='font-secondary font-normal text-5xl text-white mb-4'>
-							Finance news
+							Entity Search
 						</h1>
 						<p className='font-normal text-white'>
-							Select the filters below and search for the latest financial news
+							Select the filters below and search for all entities supported
 						</p>
 					</div>
 				</form>
 				<div className='flex flex-row justify-center gap-10 md:flex-nowrap flex-wrap'>
 					<div className='w-full'>
-						<label htmlFor='countries' className='text-white font-secondary text-2xl'>
-							Country
+						<label htmlFor='search' className='text-white font-secondary text-2xl'>
+							Entity
 						</label>
-						<Dropdown
-							values={countries}
-							id='countries'
-							isMulti
-							name='countries'
-							defaultValue={Formik.values.countries}
-							onChange={(e) => {
-								Formik.setFieldValue('countries', e);
-							}}
-							onBlur={() => {
-								Formik.setFieldTouched('countries', true);
-							}}
-							containerStyle={{
-								marginTop: 10,
-							}}
+						<input
+							type='text'
+							className='mt-[10px] border-[1px] border-[#BDBDBD] rounded-[5px] dark:bg-lightDark dark:border-lightDark p-[13px] pl-4 pr-4 font-normal leading-[189.34%] dark:text-white w-full'
+							id='search'
+							required
+							name='search'
+							onBlur={Formik.handleBlur}
+							onChange={Formik.handleChange}
+							placeholder='e.g. tsla'
 						/>
+
 						<div className='text-sm text-red-300 pt-5'>
-							{Formik.touched.countries && Formik.errors.countries && Formik.errors.countries}
-						</div>
-					</div>
-					<div className='w-full'>
-						<label htmlFor='industries' className='text-white font-secondary text-2xl'>
-							Industry
-						</label>
-						<Dropdown
-							values={industryOptions}
-							id='industries'
-							isMulti
-							name='industries'
-							defaultValue={Formik.values.industries}
-							onChange={(e) => {
-								Formik.setFieldValue('industries', e);
-							}}
-							onBlur={() => {
-								Formik.setFieldTouched('industries', true);
-							}}
-							containerStyle={{
-								marginTop: 10,
-							}}
-						/>
-						<div className='text-sm text-red-300 pt-5'>
-							{Formik.touched.industries && Formik.errors.industries && Formik.errors.industries}
+							{Formik.touched.search && Formik.errors.search && Formik.errors.search}
 						</div>
 					</div>
 				</div>
@@ -234,17 +184,17 @@ function MainSection() {
 						onClick={() => Formik.handleSubmit()}
 						type='button'
 					>
-						Get News
+						Get Entity
 					</button>
 				</div>
 			</section>
 			<section>
 				<div className='mt-10 pl-[5vw] pr-[5vw] mb-10'>
-					{newsResults.length > 0 ? (
+					{entitiesResults.length > 0 ? (
 						<>
 							<div className='grid md:grid-cols-3 grid-cols-1 gap-5  items-start'>
-								{newsResults.map((news: any) => (
-									<NewsItem news={news} key={news.uuid} />
+								{entitiesResults.map((entities: any) => (
+									<EntityItem entities={entities} key={entities.uuid} />
 								))}
 							</div>
 							<Pagination
@@ -252,11 +202,13 @@ function MainSection() {
 								totalResults={totalResults}
 								nextPageChange={nextPage}
 								previousPageChange={previousPage}
-								limit={3}
+								limit={50}
 							/>
 						</>
 					) : (
-						<p className='text-primary '>No news found. Use the filter to continue searching</p>
+						<p className='text-primary '>
+							No entity found. Use the filter to continue searching
+						</p>
 					)}
 				</div>
 			</section>

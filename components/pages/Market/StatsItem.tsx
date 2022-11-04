@@ -12,14 +12,14 @@ function NewsItem({ stats }: { stats: any }) {
 			</p>
 
 			{stats.data.map((item: any, index: number) => (
-				<div className='flex flex-row justify-between border-b-2' key={index}>
+				<div className='flex flex-row justify-between border-b-2 mb-5' key={index}>
 					<div className='flex items-center gap-3'>
 						<Image src={StockImage} alt='Stock' width={20} />
-						<span>{item.key}</span>
+						<span className='text-gray-700'>{item.key}</span>
 					</div>
 					<div className='flex items-center gap-3'>
 						<Image src={FileImage} alt='Stock' width={20} />
-						<span>{item.total_documents}</span>
+						<span className='text-gray-700'>{item.total_documents}</span>
 					</div>
 					<div className='flex items-center gap-3'>
 						<Image src={GraphImage} alt='Stock' width={20} />

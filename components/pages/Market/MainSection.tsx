@@ -49,7 +49,7 @@ function MainSection() {
 				setIndustryOptions(industries.map((item: string) => ({ label: item, value: item })));
 			} catch (error: any) {
 				openAlert({
-					message: error?.response?.data?.error?.code || 'Request failed',
+					message: error?.response?.data?.error?.message || 'Request failed',
 					type: 'error',
 				});
 				// close alert
@@ -84,7 +84,7 @@ function MainSection() {
 		} catch (error: any) {
 			dispatch(
 				openAlert({
-					message: error?.response?.data?.error?.code || 'Request failed',
+					message: error?.response?.data?.error?.message || 'Request failed',
 					type: 'error',
 				})
 			);
@@ -119,7 +119,7 @@ function MainSection() {
 			setTotalResults(res.data.meta.found);
 		} catch (error: any) {
 			openAlert({
-				message: error?.response?.data?.error?.code || 'Request failed',
+				message: error?.response?.data?.error?.message || 'Request failed',
 				type: 'error',
 			});
 			// close alert
@@ -152,7 +152,7 @@ function MainSection() {
 			setTotalResults(res.data.meta.found);
 		} catch (error: any) {
 			openAlert({
-				message: error?.response?.data?.error?.code || 'Request failed',
+				message: error?.response?.data?.error?.message || 'Request failed',
 				type: 'error',
 			});
 			// close alert

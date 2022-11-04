@@ -13,11 +13,11 @@ export default function Pagination({
 	page: number;
 	limit: number;
 }) {
-	const totalPages: number = Math.floor(totalResults / limit);
+	const totalPages: number = Math.ceil(totalResults / limit);
 
 	// const pages = Array.from(Array(totalPages).keys()).map((num) => num + 1);
 
-	const maxPages = Math.floor(20000 / 3);
+	const maxPages = Math.ceil(20000 / 3);
 
 	const pageTotalToUse = totalPages < maxPages ? totalPages : maxPages;
 
