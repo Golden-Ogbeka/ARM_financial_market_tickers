@@ -189,7 +189,7 @@ function MainSection() {
 							isMulti
 							name='countries'
 							defaultValue={Formik.values.countries}
-							onChange={(e) => {
+							onChange={(e: any) => {
 								Formik.setFieldValue('countries', e);
 							}}
 							onBlur={() => {
@@ -213,7 +213,7 @@ function MainSection() {
 							isMulti
 							name='industries'
 							defaultValue={Formik.values.industries}
-							onChange={(e) => {
+							onChange={(e: any) => {
 								Formik.setFieldValue('industries', e);
 							}}
 							onBlur={() => {
