@@ -73,7 +73,7 @@ function MainSection() {
 
 		try {
 			const res = await axios.get(
-				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&api_token=${API_URL}`
+				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&page=1&api_token=${API_URL}`
 			);
 
 			setNewsResults(res.data.data);
@@ -88,8 +88,8 @@ function MainSection() {
 		dispatch(closeLoadingIndicator());
 	};
 
-	const changePage = async (num: number) => {
-		setPage(num);
+	const nextPage = async () => {
+		setPage(page + 1);
 		dispatch(openLoadingIndicator({ text: 'Getting more news...' }));
 
 		const stringCountries: string = Formik.values.countries
@@ -102,7 +102,39 @@ function MainSection() {
 
 		try {
 			const res = await axios.get(
-				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&page=${num}&api_token=${API_URL}`
+				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&page=${
+					page + 1
+				}&api_token=${API_URL}`
+			);
+
+			setNewsResults(res.data.data);
+			setTotalResults(res.data.meta.found);
+		} catch (error) {
+			dispatch(openAlert({ message: 'Request failed', type: 'error' }));
+			// close alert
+			setTimeout(() => {
+				dispatch(closeAlert());
+			}, 5000);
+		}
+		dispatch(closeLoadingIndicator());
+	};
+	const previousPage = async () => {
+		setPage(page - 1);
+		dispatch(openLoadingIndicator({ text: 'Getting more news...' }));
+
+		const stringCountries: string = Formik.values.countries
+			.map((item: { label: string; value: string }) => item.value)
+			.join(',');
+
+		const stringIndustries: string = Formik.values.industries
+			.map((item: { label: string; value: string }) => item.value)
+			.join(',');
+
+		try {
+			const res = await axios.get(
+				`https://api.marketaux.com/v1/news/all?countries=${stringCountries}&industries=${stringIndustries}&page=${
+					page - 1
+				}&api_token=${API_URL}`
 			);
 
 			setNewsResults(res.data.data);
@@ -193,17 +225,19 @@ function MainSection() {
 				</div>
 			</section>
 			<section>
-				<div className='grid md:grid-cols-3 grid-cols-1 mt-10 pl-[5vw] pr-[5vw] gap-5'>
+				<div className='mt-10 pl-[5vw] pr-[5vw] mb-10'>
 					{newsResults.length > 0 ? (
 						<>
-							{newsResults.map((news: any) => (
-								<NewsItem news={news} key={news.uuid} />
-							))}
-
+							<div className='grid md:grid-cols-3 grid-cols-1 gap-5  items-start'>
+								{newsResults.map((news: any) => (
+									<NewsItem news={news} key={news.uuid} />
+								))}
+							</div>
 							<Pagination
 								page={page}
 								totalResults={totalResults}
-								onPageChange={changePage}
+								nextPageChange={nextPage}
+								previousPageChange={previousPage}
 								limit={3}
 							/>
 						</>

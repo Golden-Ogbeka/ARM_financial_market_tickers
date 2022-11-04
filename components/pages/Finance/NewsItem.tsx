@@ -4,17 +4,19 @@ import React from 'react';
 function NewsItem({ news }: { news: any }) {
 	return (
 		<article
-			className='rounded-2xl w-full shadow-sm bg-white cursor-pointer'
+			className='rounded-2xl w-full shadow-md bg-white cursor-pointer'
 			onClick={() => window.open(news.url)}
 		>
-			<Image
-				src={news.image_url}
-				alt='News Image'
-				height={200}
-				className='object-cover'
-				layout='fill'
-			/>
-			<div className='flex flex-col gap-5'>
+			<picture>
+				<source src={news.image_url || ''} />
+				<img
+					src={news.image_url || ''}
+					alt='News Image'
+					className='object-contain h-60 w-full'
+				/>
+			</picture>
+
+			<div className='flex flex-col gap-5 p-5'>
 				<p className='text-2xl font-secondary'>{news.title}</p>
 				<p className='text-sm text-gray-700'>{news.description}</p>
 				<p>{news.snippet}</p>
