@@ -22,7 +22,7 @@ function MarketSection() {
 					</p>
 					<div className='mt-10 flex flex-row gap-6 items-center flex-wrap justify-center md:justify-between '>
 						<Link href='/market'>
-							<button className=' bg-secondary   rounded-[56px] flex items-center justify-center h-14 w-52 text-darkBlue font-bold text-xl hover:bg-white '>
+							<button className=' bg-secondary   rounded-[56px] flex items-center justify-center h-14 w-52 text-darkBlue font-bold text-xl hover:bg-blue-900 hover:text-white '>
 								Get Started
 							</button>
 						</Link>

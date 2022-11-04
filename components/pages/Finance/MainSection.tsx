@@ -47,8 +47,13 @@ function MainSection() {
 				const industries = res.data?.data;
 
 				setIndustryOptions(industries.map((item: string) => ({ label: item, value: item })));
-			} catch (error) {
-				dispatch(openAlert({ message: 'Request failed', type: 'error' }));
+			} catch (error: any) {
+				dispatch(
+					openAlert({
+						message: error?.response?.data?.error?.code || 'Request failed',
+						type: 'error',
+					})
+				);
 				// close alert
 				setTimeout(() => {
 					dispatch(closeAlert());
@@ -78,7 +83,7 @@ function MainSection() {
 
 			setNewsResults(res.data.data);
 			setTotalResults(res.data.meta.found);
-		} catch (error) {
+		} catch (error: any) {
 			dispatch(openAlert({ message: 'Request failed', type: 'error' }));
 			// close alert
 			setTimeout(() => {
@@ -109,7 +114,7 @@ function MainSection() {
 
 			setNewsResults(res.data.data);
 			setTotalResults(res.data.meta.found);
-		} catch (error) {
+		} catch (error: any) {
 			dispatch(openAlert({ message: 'Request failed', type: 'error' }));
 			// close alert
 			setTimeout(() => {
@@ -139,7 +144,7 @@ function MainSection() {
 
 			setNewsResults(res.data.data);
 			setTotalResults(res.data.meta.found);
-		} catch (error) {
+		} catch (error: any) {
 			dispatch(openAlert({ message: 'Request failed', type: 'error' }));
 			// close alert
 			setTimeout(() => {
