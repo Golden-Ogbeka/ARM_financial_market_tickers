@@ -27,7 +27,7 @@ function Hero() {
 					</div>
 				</div>
 				<div className='text-white md:flex-[55%] sm:flex-[100%] flex flex-col lg:items-end sm:items-center'>
-					<Image src={HeroImage} alt='Boldo Product' objectFit='contain' />
+					<Image src={HeroImage} alt='Finance' objectFit='contain' />
 				</div>
 			</div>
 		</section>
